@@ -4,11 +4,13 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.bomb.FlameSegment;
 import uet.oop.bomberman.entities.character.enemy.Enemy;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.level.Coordinates;
 
 import java.util.Iterator;
 import java.util.List;
@@ -114,7 +116,7 @@ public class Bomber extends Character {
         // TODO: xử lý nhận tín hiệu điều khiển hướng đi từ _input và gọi move() để thực hiện di chuyển
         // TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
         /**
-         * QUY ƯỚC GÔC TỌA ĐỌ LÀ ĐIỂM (0;0) TRÊN CÙNG BÊN TRÁI
+         * DO: nhận hướng đi từ phím, tăng/giảm tọa độ tương ứng
          */
         int xK = 0, yK = 0;
         if(_input.right) xK++;
@@ -122,6 +124,9 @@ public class Bomber extends Character {
         if(_input.up) yK--;
         if(_input.down) yK++;
 
+        /**
+         * DO: Nhận phím nhấn thì mới di chuyển
+         */
         if(xK != 0 || yK != 0)  {
             move(xK * Game.getBomberSpeed(), yK * Game.getBomberSpeed());
             _moving = true;
@@ -136,16 +141,33 @@ public class Bomber extends Character {
 
         /**
          * DO: Kiểm tra 4 va chạm với 4 ô xung quanh (trên, dưới, trái, phải)
-         */
+         *
         for (int around = 0; around<4; around++){
             double xN = ((_x + x) + around % 2 * 11) / Game.TILES_SIZE;      // chia cho TILES.SIZE để chuyển sang tọa độ TILE,
             double yN = ((_y + y) + around / 2 * 12 -13) / Game.TILES_SIZE; // giá trị lấy từ starter code, được cho là
                                                                              // giá trị tốt nhất qua nhiều lần kiểm tra
 
+            System.out.println(this.getX()+" "+this.getY());
             Entity check = _board.getEntity(xN, yN,this);
             if(!check.collide(this)) return false;
         }
         return true;
+         */
+        double xr = _x, yr = _y -16; // Trục y hơn trục x 16, biết thông qua debug, đây là vị trí Bomber hiện tại
+
+        /** tọa độ của vật thể theo hướng đang di chuyển**/
+        if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
+        if(_direction == 1) {yr += _sprite.getSize()/2; xr += 1;}
+        if(_direction == 2) { xr += _sprite.getSize()/2; yr += 1;}
+        if(_direction == 3) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
+
+
+        int xx = Coordinates.pixelToTile(xr) +(int)x;
+        int yy = Coordinates.pixelToTile(yr) +(int)y;
+
+        Entity check = _board.getEntity(xx, yy,this);//System.out.printf("%f %f %s\n",xr,yr,check.toString());
+        if(!check.collide(this)) return false;
+        else return true;
     }
 
     @Override
@@ -155,12 +177,14 @@ public class Bomber extends Character {
 
         /**
          *  DO: Đổi hướng đi( quay mặt về hướng điều khiển)
-         *  xuống/phải/trái/lên tương ứng với 0/1/2/3
+         *  Lên/Phải/Xuống/Trái tương ứng với 0/1/2/3
          */
-        if(xK > 0) _direction = 1;
-        if(xK < 0) _direction = 3;
-        if(yK > 0) _direction = 2;
         if(yK < 0) _direction = 0;
+        if(xK > 0) _direction = 1;
+        if(yK > 0) _direction = 2;
+        if(xK < 0) _direction = 3;
+
+
 
         /**
          * Di chuyển theo trục x thì _x thay đổi theo xK , trục còn lại thay đổi =0
@@ -168,10 +192,10 @@ public class Bomber extends Character {
         if(canMove(xK, 0)) {
             _x += xK;
         }
+
         if(canMove(0, yK)) {
             _y += yK;
         }
-
 
     }
 
@@ -180,6 +204,13 @@ public class Bomber extends Character {
         // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Enemy
 
+        if (e instanceof Flame){
+            this.kill();
+            return false;
+        } else if (e instanceof Enemy){
+            this.kill();
+            return false;
+        }
         return true;
     }
 

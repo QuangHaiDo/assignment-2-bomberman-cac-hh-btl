@@ -42,7 +42,7 @@ public class FileLevelLoader extends LevelLoader {
 		// TODO: đọc dữ liệu từ tệp cấu hình /levels/Level{level}.txt
 		// TODO: cập nhật các giá trị đọc được vào _width, _height, _level, _map
 			/**
-			 * ĐOẠNH CODE ĐỌC TỪ FILE ĐƯỢC THAM KHẢO TỪ GITHUB CỦA STARTER CODE
+			 * ĐOẠN CODE ĐỌC TỪ FILE ĐƯỢC THAM KHẢO TỪ GITHUB CỦA STARTER CODE
 			 */
 			URL absPath = FileLevelLoader.class.getResource("/" + path);
 			BufferedReader in = new BufferedReader(

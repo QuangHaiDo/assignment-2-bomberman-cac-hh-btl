@@ -82,23 +82,26 @@ public abstract class Enemy extends Character {
 		// TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
 
 		int xK = 0, yK = 0;
-		if(_steps <= 0){
-			_direction = _ai.calculateDirection();
-			_steps = MAX_STEPS;
-		}
-		switch (_direction){
-			case 0: yK++ ; // xuống
-			case 3: yK--; // lên
-			case 1: xK++; // phải
-			case 2: xK--; // trái
 
+		/**
+		 * DO: Đổi hướng di chuyển nếu gặp vật cản/bị kẹt
+		 * */
+		if(!_moving){
+			_direction = _ai.calculateDirection();
 		}
-		if(canMove(xK,yK))  {
-			_steps -= 1 + rest;
+
+		/**
+		 * DO: di chuyển liên tục theo hướng, gặp vật cản _moving=false
+		 */
+		if(_direction == 0) yK--;
+		if(_direction == 2) yK++;
+		if(_direction == 3) xK--;
+		if(_direction == 1) xK++;
+
+		if(canMove(xK, yK)) {
 			move(xK * _speed, yK * _speed);
 			_moving = true;
 		} else {
-			_steps = 0;
 			_moving = false;
 		}
 
@@ -115,14 +118,11 @@ public abstract class Enemy extends Character {
 	public boolean canMove(double x, double y) {
 		// TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
 
-		double xr = _x, yr = _y - 16; //subtract y to get more accurate results
-
-		//the thing is, subtract 15 to 16 (sprite size), so if we add 1 tile we get the next pixel tile with this
-		//we avoid the shaking inside tiles with the help of steps
-		if(_direction == 3) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
+		double xr = _x, yr = _y - 16;
+		if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
 		if(_direction == 1) {yr += _sprite.getSize()/2; xr += 1;}
-		if(_direction == 0) { xr += _sprite.getSize()/2; yr += 1;}
-		if(_direction == 2) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
+		if(_direction == 2) { xr += _sprite.getSize()/2; yr += 1;}
+		if(_direction == 3) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
 
 		int xx = Coordinates.pixelToTile(xr) +(int)x;
 		int yy = Coordinates.pixelToTile(yr) +(int)y;
