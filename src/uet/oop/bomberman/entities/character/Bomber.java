@@ -77,10 +77,22 @@ public class Bomber extends Character {
         // TODO: _timeBetweenPutBombs dùng để ngăn chặn Bomber đặt 2 Bomb cùng tại 1 vị trí trong 1 khoảng thời gian quá ngắn
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset _timeBetweenPutBombs về 0
+
+        /**
+         * Kiểm tra 3 điều kiện có thỏa mãn để đặt bomb
+         * */
+        if (_input.space  && _timeBetweenPutBombs<0 && Game.getBombRate()>0){
+            placeBomb(Coordinates.pixelToTile(_x),Coordinates.pixelToTile(_y));
+            Game.addBombRate(-1);
+            _timeBetweenPutBombs=30;
+
+        }
     }
 
     protected void placeBomb(int x, int y) {
         // TODO: thực hiện tạo đối tượng bom, đặt vào vị trí (x, y)
+        Bomb placeBomb = new Bomb(x,y,_board);
+        _board.addBomb(placeBomb);
     }
 
     private void clearBombs() {
@@ -133,6 +145,7 @@ public class Bomber extends Character {
         } else {
             _moving = false;
         }
+
     }
 
     @Override
@@ -153,7 +166,7 @@ public class Bomber extends Character {
         }
         return true;
          */
-        double xr = _x, yr = _y -16; // Trục y hơn trục x 16, biết thông qua debug, đây là vị trí Bomber hiện tại
+        double xr = _x, yr = _y -16; // Trục y hơn trục x 16, biết thông qua debug, đây là vị trí Bomber chuẩn bị đến
 
         /** tọa độ của vật thể theo hướng đang di chuyển**/
         if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
@@ -189,13 +202,14 @@ public class Bomber extends Character {
         /**
          * Di chuyển theo trục x thì _x thay đổi theo xK , trục còn lại thay đổi =0
          */
-        if(canMove(xK, 0)) {
+        if(canMove(xK, yK)) {
             _x += xK;
-        }
-
-        if(canMove(0, yK)) {
             _y += yK;
         }
+/**
+        if(canMove(0, yK)) {
+            _y += yK;
+        }*/
 
     }
 

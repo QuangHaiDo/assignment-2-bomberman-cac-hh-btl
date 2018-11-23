@@ -42,23 +42,23 @@ public class FileLevelLoader extends LevelLoader {
 		// TODO: đọc dữ liệu từ tệp cấu hình /levels/Level{level}.txt
 		// TODO: cập nhật các giá trị đọc được vào _width, _height, _level, _map
 			/**
-			 * ĐOẠN CODE ĐỌC TỪ FILE ĐƯỢC THAM KHẢO TỪ GITHUB CỦA STARTER CODE
+			 * DO: Tìm file theo đường dẫn của resources
 			 */
 			URL absPath = FileLevelLoader.class.getResource("/" + path);
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(absPath.openStream()));
 
 			String data = in.readLine();
-			StringTokenizer tokens = new StringTokenizer(data);
+			StringTokenizer tokens = new StringTokenizer(data);  // From stater code
 
 			_level = Integer.parseInt(tokens.nextToken());
 			_height = Integer.parseInt(tokens.nextToken());
 			_width = Integer.parseInt(tokens.nextToken());
 
-			_lineTiles = new String[_height];
+			_map = new char[_height][_width];
 
 			for(int i = 0; i < _height; ++i) {
-				_lineTiles[i] = in.readLine().substring(0, _width);
+				_map[i] = in.readLine().toCharArray();
 			}
 			in.close();
 		} catch (IOException e) {
@@ -73,7 +73,6 @@ public class FileLevelLoader extends LevelLoader {
 
 		// TODO: phần code mẫu ở dưới để hướng dẫn cách thêm các loại Entity vào game
 		// TODO: hãy xóa nó khi hoàn thành chức năng load màn chơi từ tệp cấu hình
-		// thêm Wall
 
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
@@ -81,7 +80,7 @@ public class FileLevelLoader extends LevelLoader {
 				/**
 				 * lẤP ĐẦY MAP BẰNG NHỮNG ENTITY
 				 */
-				switch (_lineTiles[y].charAt(x)) {
+				switch (_map[y][x]) {
 
 					// Thêm Wall
 					case '#':
