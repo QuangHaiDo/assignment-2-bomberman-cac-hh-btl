@@ -85,7 +85,7 @@ public class FileLevelLoader extends LevelLoader {
 					// Thêm Wall
 					case '#':
 					{
-						_board.addEntity(x+y*_width, new Wall(x, y, Sprite.wall));
+						_board.addEntity(pos, new Wall(x, y, Sprite.wall));
 						break;
 					}
 					// thêm Bomber
@@ -115,9 +115,7 @@ public class FileLevelLoader extends LevelLoader {
 						_board.addEntity(pos,
 								new LayeredEntity(x, y,
 										new Grass(x, y, Sprite.grass),
-										new Brick(x, y, Sprite.brick)
-								)
-						);
+										new Brick(x, y, Sprite.brick)) );
 						break;
 					}
 					// thêm portal
@@ -126,7 +124,7 @@ public class FileLevelLoader extends LevelLoader {
 						_board.addEntity(pos,
 								new LayeredEntity(x, y,
 								new Grass(x ,y, Sprite.grass),
-								new Portal(x,y,Sprite.grass),
+								new Portal(x,y,Sprite.portal),
 								new Brick(x ,y, Sprite.brick)) );
 						break;
 					}
@@ -138,10 +136,8 @@ public class FileLevelLoader extends LevelLoader {
 						_board.addEntity(pos,
 								new LayeredEntity(x, y,
 										new Grass(x, y, Sprite.grass),
-										new SpeedItem(x, y, Sprite.powerup_flames),
-										new Brick(x, y, Sprite.brick)
-								)
-						);
+										new SpeedItem(x, y, Sprite.powerup_speed),
+										new Brick(x, y, Sprite.brick)) );
 						break;
 					}
 					// flame Item
@@ -162,7 +158,7 @@ public class FileLevelLoader extends LevelLoader {
 						_board.addEntity(pos,
 								new LayeredEntity(x, y,
 										new Grass(x, y, Sprite.grass),
-										new BombItem(x, y, Sprite.powerup_flames),
+										new BombItem(x, y, Sprite.powerup_bombs),
 										new Brick(x, y, Sprite.brick)
 								)
 						);

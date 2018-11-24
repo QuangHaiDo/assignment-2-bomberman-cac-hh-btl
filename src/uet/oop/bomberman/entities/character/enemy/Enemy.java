@@ -118,14 +118,15 @@ public abstract class Enemy extends Character {
 	public boolean canMove(double x, double y) {
 		// TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
 
-		double xr = _x, yr = _y - 16;
-		if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
-		if(_direction == 1) {yr += _sprite.getSize()/2; xr += 1;}
-		if(_direction == 2) { xr += _sprite.getSize()/2; yr += 1;}
-		if(_direction == 3) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
+		double xN = _x, yN = _y - 16;
 
-		int xx = Coordinates.pixelToTile(xr) +(int)x;
-		int yy = Coordinates.pixelToTile(yr) +(int)y;
+		if(_direction == 0) { xN += _sprite.getSize()/2;  yN += _sprite.getSize() -1 ;}
+		if(_direction == 1) { xN += 1; yN += _sprite.getSize()/2;}
+		if(_direction == 2) { xN += _sprite.getSize()/2; yN += 1;}
+		if(_direction == 3) { xN += _sprite.getSize() -1; yN += _sprite.getSize()/2;}
+
+		int xx = Coordinates.pixelToTile(xN) +(int)x;
+		int yy = Coordinates.pixelToTile(yN) +(int)y;
 
 		Entity a = _board.getEntity(xx, yy, this); //entity of the position we want to go
 
@@ -136,7 +137,7 @@ public abstract class Enemy extends Character {
 	public boolean collide(Entity e) {
 		// TODO: xử lý va chạm với Flame
 		// TODO: xử lý va chạm với Bomber
-		if(e instanceof FlameSegment) {
+		if(e instanceof Flame) {
 			kill();
 			return false;
 		}

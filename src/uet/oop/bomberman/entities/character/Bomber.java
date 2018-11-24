@@ -81,8 +81,11 @@ public class Bomber extends Character {
         /**
          * Kiểm tra 3 điều kiện có thỏa mãn để đặt bomb
          * */
+        //System.out.println(Game.getBombRate());
+
         if (_input.space  && _timeBetweenPutBombs<0 && Game.getBombRate()>0){
-            placeBomb(Coordinates.pixelToTile(_x),Coordinates.pixelToTile(_y));
+            placeBomb( Coordinates.pixelToTile(_x+_sprite.getSize() / 2),
+                    Coordinates.pixelToTile(_y - _sprite.getSize()/2 ) );
             Game.addBombRate(-1);
             _timeBetweenPutBombs=30;
 
@@ -154,33 +157,33 @@ public class Bomber extends Character {
 
         /**
          * DO: Kiểm tra 4 va chạm với 4 ô xung quanh (trên, dưới, trái, phải)
-         *
+         */
         for (int around = 0; around<4; around++){
             double xN = ((_x + x) + around % 2 * 11) / Game.TILES_SIZE;      // chia cho TILES.SIZE để chuyển sang tọa độ TILE,
             double yN = ((_y + y) + around / 2 * 12 -13) / Game.TILES_SIZE; // giá trị lấy từ starter code, được cho là
                                                                              // giá trị tốt nhất qua nhiều lần kiểm tra
 
-            System.out.println(this.getX()+" "+this.getY());
+            //System.out.println(this.getX()+" "+this.getY());
             Entity check = _board.getEntity(xN, yN,this);
             if(!check.collide(this)) return false;
         }
         return true;
-         */
-        double xr = _x, yr = _y -16; // Trục y hơn trục x 16, biết thông qua debug, đây là vị trí Bomber chuẩn bị đến
+         /*
+        double xN = _x, yN = _y-16;
+        System.out.printf("%f %f \n",_x,_y);
+        /** tọa độ của vật thể theo hướng đang di chuyển**
+        if(_direction == 0) {xN += _sprite.getSize()/2; yN += _sprite.getSize() -1 ;  }
+        if(_direction == 1) { xN += 1;yN += _sprite.getSize()/2;}
+        if(_direction == 2) { xN += _sprite.getSize()/2; yN += 1;}
+        if(_direction == 3) { xN += _sprite.getSize() -1; yN += _sprite.getSize()/2;}
 
-        /** tọa độ của vật thể theo hướng đang di chuyển**/
-        if(_direction == 0) { yr += _sprite.getSize() -1 ; xr += _sprite.getSize()/2; }
-        if(_direction == 1) {yr += _sprite.getSize()/2; xr += 1;}
-        if(_direction == 2) { xr += _sprite.getSize()/2; yr += 1;}
-        if(_direction == 3) { xr += _sprite.getSize() -1; yr += _sprite.getSize()/2;}
 
-
-        int xx = Coordinates.pixelToTile(xr) +(int)x;
-        int yy = Coordinates.pixelToTile(yr) +(int)y;
+        int xx = Coordinates.pixelToTile(xN) +(int)x;
+        int yy = Coordinates.pixelToTile(yN) +(int)y;
 
         Entity check = _board.getEntity(xx, yy,this);//System.out.printf("%f %f %s\n",xr,yr,check.toString());
         if(!check.collide(this)) return false;
-        else return true;
+        else return true;*/
     }
 
     @Override

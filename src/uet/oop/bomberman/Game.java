@@ -176,7 +176,7 @@ public class Game extends Canvas {
 	}
 	
 	public static void addBombRate(int i) {
-		bombRate += i;
+		bombRate +=i;
 	}
 
 	public void resetScreenDelay() {

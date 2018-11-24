@@ -82,7 +82,7 @@ public class Flame extends Entity {
 
 			if(a instanceof Character) length++;
 
-			if(a.collide(this) == false) // Khong cho di qua
+			if(a.collide(this) == false) // Không cho xuyên qua
 				break;
 
 			length++;
