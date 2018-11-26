@@ -205,13 +205,14 @@ public class Bomber extends Character {
         /**
          * Di chuyển theo trục x thì _x thay đổi theo xK , trục còn lại thay đổi =0
          */
-        if(canMove(xK, 0)) {
+        if(canMove(xK, yK)) {
             _x += xK;
-            //_y += yK;
+            _y += yK;
         }
+        /*
         if (canMove(0,yK)){
             _y+=yK;
-        }
+        }*/
 
     }
 
