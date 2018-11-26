@@ -163,7 +163,7 @@ public class Bomber extends Character {
             double yN = ((_y + y) + around / 2 * 12 -13) / Game.TILES_SIZE; // giá trị lấy từ starter code, được cho là
                                                                              // giá trị tốt nhất qua nhiều lần kiểm tra
 
-            //System.out.println(this.getX()+" "+this.getY());
+
             Entity check = _board.getEntity(xN, yN,this);
             if(!check.collide(this)) return false;
         }
@@ -205,14 +205,13 @@ public class Bomber extends Character {
         /**
          * Di chuyển theo trục x thì _x thay đổi theo xK , trục còn lại thay đổi =0
          */
-        if(canMove(xK, yK)) {
+        if(canMove(xK, 0)) {
             _x += xK;
-            _y += yK;
+            //_y += yK;
         }
-/**
-        if(canMove(0, yK)) {
-            _y += yK;
-        }*/
+        if (canMove(0,yK)){
+            _y+=yK;
+        }
 
     }
 

@@ -13,7 +13,7 @@ public class SpeedItem extends Item {
 	@Override
 	public boolean collide(Entity e) {
 		// TODO: xử lý Bomber ăn Item
-		Game.addBomberSpeed(0.1);
+		Game.addBomberSpeed(0.2);
 		remove();
 		return false;
 	}
