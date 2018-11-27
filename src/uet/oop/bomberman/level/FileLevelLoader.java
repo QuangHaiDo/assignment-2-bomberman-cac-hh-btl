@@ -19,10 +19,9 @@ import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.StringTokenizer;
 
 public class FileLevelLoader extends LevelLoader {
 
@@ -32,37 +31,40 @@ public class FileLevelLoader extends LevelLoader {
 	 */
 	private static char[][] _map;
 	
-	public FileLevelLoader(Board board, String path) throws LoadLevelException {
-		super(board, path);
+	public FileLevelLoader(Board board, int level) throws LoadLevelException {
+		super(board, level);
 	}
 	
 	@Override
-	public void loadLevel(String path) throws LoadLevelException {
-		try {
+	public void loadLevel(int level) throws LoadLevelException {
 		// TODO: đọc dữ liệu từ tệp cấu hình /levels/Level{level}.txt
 		// TODO: cập nhật các giá trị đọc được vào _width, _height, _level, _map
-			/**
-			 * DO: Tìm file theo đường dẫn của resources
-			 */
-			URL absPath = FileLevelLoader.class.getResource("/" + path);
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(absPath.openStream()));
+		try {
+			URL url = FileLevelLoader.class.getResource("/levels/Level"+level+".txt");
+			String path = url.getPath();
+			FileReader fr = new FileReader(path);
+			BufferedReader in = new BufferedReader(fr);
 
 			String data = in.readLine();
-			StringTokenizer tokens = new StringTokenizer(data);  // From stater code
+			String value[] = data.split(" ");
+			_level =  Integer.parseInt(value[0]);
+			_height = Integer.parseInt(value[1]);
+			_width = Integer.parseInt(value[2]);
+			_map = new char[_width][_height];
 
-			_level = Integer.parseInt(tokens.nextToken());
-			_height = Integer.parseInt(tokens.nextToken());
-			_width = Integer.parseInt(tokens.nextToken());
-
-			_map = new char[_height][_width];
+			_lineTiles = new String[_height];
 
 			for(int i = 0; i < _height; ++i) {
-				_map[i] = in.readLine().toCharArray();
+				_lineTiles[i] = in.readLine().substring(0, _width);
+			}
+			for(int y=0; y<_height; y++){
+				for(int x=0; x<_width; x++){
+					_map[x][y] = _lineTiles[y].charAt(x);
+				}
 			}
 			in.close();
 		} catch (IOException e) {
-			throw new LoadLevelException("Error loading level " + path, e);
+			throw new LoadLevelException("Error loading level " + level, e);
 		}
 	}
 
@@ -80,7 +82,7 @@ public class FileLevelLoader extends LevelLoader {
 				/**
 				 * lẤP ĐẦY MAP BẰNG NHỮNG ENTITY
 				 */
-				switch (_map[y][x]) {
+				switch (_map[x][y]) {
 
 					// Thêm Wall
 					case '#':

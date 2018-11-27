@@ -96,7 +96,7 @@ public class Board implements IRender {
 		_messages.clear();
 		
 		try {
-			_levelLoader = new FileLevelLoader(this,"levels/Level" + level + ".txt");
+			_levelLoader = new FileLevelLoader(this,level);
 			_entities = new Entity[_levelLoader.getHeight() * _levelLoader.getWidth()];
 			
 			_levelLoader.createEntities();

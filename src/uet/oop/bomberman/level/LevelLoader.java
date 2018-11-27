@@ -13,12 +13,12 @@ public abstract class LevelLoader {
 	protected String[] _lineTiles;
 	protected Board _board;
 
-	public LevelLoader(Board board, String path) throws LoadLevelException {
+	public LevelLoader(Board board, int level) throws LoadLevelException {
 		_board = board;
-		loadLevel(path);
+		loadLevel(level);
 	}
 
-	public abstract void loadLevel(String path) throws LoadLevelException;
+	public abstract void loadLevel(int level) throws LoadLevelException;
 
 	public abstract void createEntities();
 
