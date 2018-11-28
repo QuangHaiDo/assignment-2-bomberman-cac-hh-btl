@@ -9,6 +9,8 @@ import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.Coordinates;
+import uet.oop.bomberman.sound.BackgroundMusic;
+import uet.oop.bomberman.sound.SoundEffect;
 
 public class Bomb extends AnimatedEntitiy {
 
@@ -19,7 +21,9 @@ public class Bomb extends AnimatedEntitiy {
 	protected Flame[] _flames;
 	protected boolean _exploded = false;
 	protected boolean _allowedToPassThrough = true;
-	
+
+	SoundEffect soundEffect = new SoundEffect();
+
 	public Bomb(int x, int y, Board board) {
 		_x = x;
 		_y = y;
@@ -87,6 +91,7 @@ public class Bomb extends AnimatedEntitiy {
         for (int i = 0; i < _flames.length; i++) {
             _flames[i] = new Flame((int)_x, (int)_y, i, Game.getBombRadius(), _board);
         }
+		soundEffect.play("boomExplode");
 	}
 	
 	public FlameSegment flameAt(int x, int y) {

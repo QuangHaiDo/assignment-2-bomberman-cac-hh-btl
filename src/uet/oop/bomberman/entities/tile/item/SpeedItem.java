@@ -16,6 +16,7 @@ public class SpeedItem extends Item {
 	public boolean collide(Entity e) {
 		// TODO: xử lý Bomber ăn Item
 		if (e instanceof Bomber){
+			soundEffect.play("itemCollected");
 			Game.addBomberSpeed(0.2);
 			remove();
 			return false;

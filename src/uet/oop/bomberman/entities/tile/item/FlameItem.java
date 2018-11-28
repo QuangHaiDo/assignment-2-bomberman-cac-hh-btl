@@ -16,6 +16,7 @@ public class FlameItem extends Item {
 	public boolean collide(Entity e) {
 		// TODO: xử lý Bomber ăn Item
 		if (e instanceof Bomber){
+			soundEffect.play("itemCollected");
 			Game.addBombRadius(1);
 			remove();
 			return false;

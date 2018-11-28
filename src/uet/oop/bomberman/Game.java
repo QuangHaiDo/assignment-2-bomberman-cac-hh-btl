@@ -3,12 +3,13 @@ package uet.oop.bomberman;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.gui.Frame;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.sound.BackgroundMusic;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import uet.oop.bomberman.sound.Sound;
+
 
 /**
  * Tạo vòng lặp cho game, lưu trữ một vài tham số cấu hình toàn cục,
@@ -50,7 +51,7 @@ public class Game extends Canvas {
 	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-	
+
 	public Game(Frame frame) {
 		_frame = frame;
 		_frame.setTitle(TITLE);
@@ -108,20 +109,21 @@ public class Game extends Canvas {
 		_input.update();
 		_board.update();
 	}
-	
+
+	BackgroundMusic backgroundMusic = new BackgroundMusic();
 	public void start() {
 
 		_running = true;
-
 		long  lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
 		final double ns = 1000000000.0 / 60.0; //nanosecond, 60 frames per second
 		double delta = 0;
 		int frames = 0;
 		int updates = 0;
-
-		 Sound.backgroundMusic();
 		requestFocus();
+
+		backgroundMusic.play();
+
 		while(_running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
