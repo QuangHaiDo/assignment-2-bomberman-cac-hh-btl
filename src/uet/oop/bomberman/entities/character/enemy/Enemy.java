@@ -137,6 +137,7 @@ public abstract class Enemy extends Character {
 	public boolean collide(Entity e) {
 		// TODO: xử lý va chạm với Flame
 		// TODO: xử lý va chạm với Bomber
+
 		if(e instanceof Flame) {
 			kill();
 			return false;
